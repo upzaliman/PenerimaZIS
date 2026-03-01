@@ -170,7 +170,9 @@ let f=data.filter(d=>d.rt===rtName);
 html+=`
 <div class="card shadow-sm p-3 mb-3">
 <h5 class="text-success">${rtName}</h5>
-<table class="table table-bordered table-striped">
+<div class="table-responsive table-scroll">
+  <table class="table table-bordered table-striped">
+  </div>
 <thead class="table-success">
 <tr><th>No</th><th>No Rumah</th><th>Nama</th><th>Keterangan</th><th width="110">Aksi</th></tr>
 </thead><tbody>`;
