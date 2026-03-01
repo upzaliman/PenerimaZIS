@@ -3,83 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pendataan Fakir Miskin Penerima Santunan (Zakat, Infaq dan Shodaqoh) RW 06</title>
+<title>Pendataan Fakir Miskin Penerima Santunan RW 06</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 body{
-background: linear-gradient(120deg,#a8e6cf,#fdfbfb);
+  background: linear-gradient(120deg,#a8e6cf,#fdfbfb);
 }
 .card{border-radius:20px;}
 .table{font-size:14px;}
 
-/* ===== HEADER FLEX ===== */
+/* ===== HEADER ===== */
 .upz-header{
-background: linear-gradient(90deg,#1b5e20,#2e7d32);
-padding:10px 0;
+  background: linear-gradient(90deg,#1b5e20,#2e7d32);
+  padding:10px 0;
 }
-.logo-upz,.logo-baznas{max-height:70px;width:auto;}
+.logo-upz,.logo-baznas{max-height:70px;}
 .header-title{line-height:1.25;}
 .title-main{font-size:18px;font-weight:700;}
 .title-sub{font-size:15px;font-weight:600;}
 .title-desc{font-size:12px;}
 
-/* ===== MOBILE HEADER LEBAR ===== */
-@media (max-width: 768px) {
-
-  .upz-header .container{
-    flex-direction: row;        /* TETAP SEJAJAR */
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo-upz,
-  .logo-baznas{
-    max-height: 50px;
-  }
-
-  .header-title{
-    padding: 0 6px;
-  }
-
-  .title-main{
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .title-sub{
-    font-size: 12px;
-  }
-
-  .title-desc{
-    font-size: 10px;
-  }
+/* ===== MOBILE HEADER ===== */
+@media(max-width:768px){
+  .logo-upz,.logo-baznas{max-height:50px;}
+  .title-main{font-size:14px;}
+  .title-sub{font-size:12px;}
+  .title-desc{font-size:10px;}
 }
 
-/* ===== TABLE MOBILE SCROLL ===== */
-.table-scroll{
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+/* ===== TABLE SCROLL HP ===== */
+.table-scroll-x{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
-
-.table{
-  min-width: 600px; /* paksa lebar, biar scroll */
+.table-scroll-x table{
+  min-width:720px; /* paksa lebar desktop */
+}
+.table th,.table td{
+  white-space:nowrap;
+  vertical-align:middle;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header class="upz-header text-white">
 <div class="container d-flex align-items-center justify-content-between">
-<img src="https://drive.google.com/thumbnail?id=1Dfw4w7izvO45kVrbMJ0xdeh0Wz1oEpcO&sz=w300" class="logo-upz">
-<div class="header-title text-center">
-<div class="title-main">BAZNAS UNIT PENGUMPUL ZAKAT (UPZ) MASJID AL-IMAN</div>
-<div class="title-sub">RW VI – NGALIYAN – SEMARANG</div>
-<div class="title-desc">Sekretariat: Jln. Masjid Al-Iman Karosih Selatan XI Ngaliyan Kota Semarang</div>
-</div>
-<img src="https://drive.google.com/thumbnail?id=1omTpsyka0bPPJ1czgA5-GIIdihgkJK3C&sz=w300" class="logo-baznas">
+  <img src="https://drive.google.com/thumbnail?id=1Dfw4w7izvO45kVrbMJ0xdeh0Wz1oEpcO&sz=w300" class="logo-upz">
+  <div class="header-title text-center">
+    <div class="title-main">BAZNAS UNIT PENGUMPUL ZAKAT (UPZ) MASJID AL-IMAN</div>
+    <div class="title-sub">RW VI – NGALIYAN – SEMARANG</div>
+    <div class="title-desc">Sekretariat: Jln. Masjid Al-Iman Karosih Selatan XI Ngaliyan Kota Semarang</div>
+  </div>
+  <img src="https://drive.google.com/thumbnail?id=1omTpsyka0bPPJ1czgA5-GIIdihgkJK3C&sz=w300" class="logo-baznas">
 </div>
 </header>
 
@@ -87,8 +68,9 @@ padding:10px 0;
 
 <div class="container mt-4 mb-5">
 
+<!-- ===== FORM ===== -->
 <div class="card shadow p-4 mb-4">
-<h3 class="text-center text-success">Pendataan Fakir Miskin Penerima Santunan (Zakat, Infaq dan Shodaqoh)</h3>
+<h3 class="text-center text-success">Pendataan Fakir Miskin</h3>
 <h5 class="text-center">RW 06 Ngaliyan - Semarang</h5>
 <hr>
 
@@ -123,6 +105,7 @@ padding:10px 0;
 </div>
 </div>
 
+<!-- ===== DATA ===== -->
 <div class="card shadow p-4">
 <h5>Data Tersimpan Per RT</h5>
 <div id="dataRT"></div>
@@ -137,8 +120,8 @@ const scriptURL="https://script.google.com/macros/s/AKfycbxTOq-iiw_bHfmdK-MOf0R6
 const rtSelect=document.getElementById("rtSelect");
 rtSelect.innerHTML='<option value="">--Pilih RT--</option>';
 for(let i=1;i<=13;i++){
-let rt=i.toString().padStart(2,"0");
-rtSelect.innerHTML+=`<option value="RT ${rt}">RT ${rt}</option>`;
+  let rt=i.toString().padStart(2,"0");
+  rtSelect.innerHTML+=`<option value="RT ${rt}">RT ${rt}</option>`;
 }
 rtSelect.onchange=()=>rtInput.value=rtSelect.value;
 
@@ -154,20 +137,12 @@ if(rt==""||nama==""||rumah==""){alert("RT, Nama & No Rumah wajib diisi!");return
 
 fetch(scriptURL,{
 method:"POST",
-body:JSON.stringify({
-action:id?"update":"insert",
-id,rt,rumah,nama,ket
+body:JSON.stringify({action:id?"update":"insert",id,rt,rumah,nama,ket})
 })
-})
-.then(r=>r.json())
-.then(()=>{
-alert(id?"Data diperbarui":"Data disimpan");
-resetForm();
-loadSemuaRT();
-});
+.then(()=>{resetForm();loadSemuaRT();});
 }
 
-// ===== LOAD DATA =====
+// ===== LOAD =====
 function loadSemuaRT(){
 fetch(scriptURL)
 .then(r=>r.json())
@@ -177,17 +152,21 @@ for(let r=1;r<=13;r++){
 let rt=("0"+r).slice(-2);
 let rtName="RT "+rt;
 let f=data.filter(d=>d.rt===rtName);
+
 html+=`
 <div class="card shadow-sm p-3 mb-3">
 <h5 class="text-success">${rtName}</h5>
-<div class="table-responsive table-scroll">
-  <table class="table table-bordered table-striped">
-  </div>
+<div class="table-scroll-x">
+<table class="table table-bordered table-striped">
 <thead class="table-success">
-<tr><th>No</th><th>No Rumah</th><th>Nama</th><th>Keterangan</th><th width="110">Aksi</th></tr>
-</thead><tbody>`;
+<tr>
+<th>No</th><th>No Rumah</th><th>Nama</th><th>Keterangan</th><th width="110">Aksi</th>
+</tr>
+</thead>
+<tbody>`;
+
 if(!f.length){
-html+=`<tr><td colspan="5" class="text-center">Belum ada data</td></tr>`;
+html+=`<tr><td colspan="5" class="text-center text-muted">Belum ada data</td></tr>`;
 }else{
 f.forEach((d,i)=>{
 html+=`
@@ -196,14 +175,17 @@ html+=`
 <td>${d.rumah}</td>
 <td>${d.nama}</td>
 <td>${d.ket}</td>
-<td>
-<button class="btn btn-sm btn-warning" onclick="editData('${d.id}','${d.rt}','${d.rumah}','${d.nama}','${d.ket}')">✏️</button>
-<button class="btn btn-sm btn-danger" onclick="hapusData('${d.id}')">🗑️</button>
+<td class="text-center">
+<button class="btn btn-warning btn-sm px-2 py-1 me-1"
+onclick="editData('${d.id}','${d.rt}','${d.rumah}','${d.nama}','${d.ket}')">✏️</button>
+<button class="btn btn-danger btn-sm px-2 py-1"
+onclick="hapusData('${d.id}')">🗑️</button>
 </td>
 </tr>`;
 });
 }
-html+=`</tbody></table></div>`;
+
+html+=`</tbody></table></div></div>`;
 }
 dataRT.innerHTML=html;
 });
@@ -222,10 +204,7 @@ window.scrollTo({top:0,behavior:"smooth"});
 // ===== DELETE =====
 function hapusData(id){
 if(!confirm("Yakin hapus data ini?"))return;
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify({action:"delete",id})
-})
+fetch(scriptURL,{method:"POST",body:JSON.stringify({action:"delete",id})})
 .then(()=>loadSemuaRT());
 }
 
