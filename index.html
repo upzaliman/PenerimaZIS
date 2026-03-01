@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pendataan Fakir Miskin Penerima Santunan (Zakat, Infaq dan Shodaqoh) RW 06</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body{
+background: linear-gradient(120deg,#a8e6cf,#fdfbfb);
+}
+.card{border-radius:20px;}
+.table{font-size:14px;}
+
+/* ===== HEADER FLEX ===== */
+.upz-header{
+background: linear-gradient(90deg,#1b5e20,#2e7d32);
+padding:10px 0;
+}
+.logo-upz,.logo-baznas{max-height:70px;width:auto;}
+.header-title{line-height:1.25;}
+.title-main{font-size:18px;font-weight:700;}
+.title-sub{font-size:15px;font-weight:600;}
+.title-desc{font-size:12px;}
+
+@media(max-width:768px){
+.upz-header .container{flex-direction:column;gap:6px;}
+.logo-upz,.logo-baznas{max-height:55px;}
+.title-main{font-size:15px;}
+.title-sub{font-size:13px;}
+.title-desc{font-size:11px;}
+}
+</style>
+</head>
+
+<body>
+
+<header class="upz-header text-white">
+<div class="container d-flex align-items-center justify-content-between">
+<img src="https://drive.google.com/thumbnail?id=1Dfw4w7izvO45kVrbMJ0xdeh0Wz1oEpcO&sz=w300" class="logo-upz">
+<div class="header-title text-center">
+<div class="title-main">BAZNAS UNIT PENGUMPUL ZAKAT (UPZ) MASJID AL-IMAN</div>
+<div class="title-sub">RW VI – NGALIYAN – SEMARANG</div>
+<div class="title-desc">Sekretariat: Jln. Masjid Al-Iman Karosih Selatan XI Ngaliyan Kota Semarang</div>
+</div>
+<img src="https://drive.google.com/thumbnail?id=1omTpsyka0bPPJ1czgA5-GIIdihgkJK3C&sz=w300" class="logo-baznas">
+</div>
+</header>
+
+<hr class="mt-0">
+
+<div class="container mt-4 mb-5">
+
+<div class="card shadow p-4 mb-4">
+<h3 class="text-center text-success">Pendataan Fakir Miskin Penerima Santunan (Zakat, Infaq dan Shodaqoh)</h3>
+<h5 class="text-center">RW 06 Ngaliyan - Semarang</h5>
+<hr>
+
+<input type="hidden" id="editId">
+
+<div class="row">
+<div class="col-md-3">
+<label>Pilih RT</label>
+<select id="rtSelect" class="form-select"></select>
+</div>
+<div class="col-md-2">
+<label>RT</label>
+<input type="text" id="rtInput" class="form-control" readonly>
+</div>
+<div class="col-md-2">
+<label>No Rumah</label>
+<input type="text" id="rumahInput" class="form-control">
+</div>
+<div class="col-md-3">
+<label>Nama</label>
+<input type="text" id="namaInput" class="form-control">
+</div>
+<div class="col-md-2">
+<label>Keterangan</label>
+<input type="text" id="ketInput" class="form-control">
+</div>
+</div>
+
+<div class="mt-3">
+<button class="btn btn-success" onclick="saveData()">💾 Save</button>
+<button class="btn btn-warning" onclick="resetForm()">Reset</button>
+</div>
+</div>
+
+<div class="card shadow p-4">
+<h5>Data Tersimpan Per RT</h5>
+<div id="dataRT"></div>
+</div>
+
+</div>
+
+<script>
+const scriptURL="https://script.google.com/macros/s/AKfycbxTOq-iiw_bHfmdK-MOf0R6Bot2o45WXKHjELi_M1dUfC3oZn6iXf6yNX-ivgYs-wOc/exec";
+
+// ===== RT DROPDOWN =====
+const rtSelect=document.getElementById("rtSelect");
+rtSelect.innerHTML='<option value="">--Pilih RT--</option>';
+for(let i=1;i<=13;i++){
+let rt=i.toString().padStart(2,"0");
+rtSelect.innerHTML+=`<option value="RT ${rt}">RT ${rt}</option>`;
+}
+rtSelect.onchange=()=>rtInput.value=rtSelect.value;
+
+// ===== SAVE / UPDATE =====
+function saveData(){
+let id=editId.value;
+let rt=rtInput.value;
+let rumah=rumahInput.value;
+let nama=namaInput.value;
+let ket=ketInput.value;
+
+if(rt==""||nama==""||rumah==""){alert("RT, Nama & No Rumah wajib diisi!");return;}
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+action:id?"update":"insert",
+id,rt,rumah,nama,ket
+})
+})
+.then(r=>r.json())
+.then(()=>{
+alert(id?"Data diperbarui":"Data disimpan");
+resetForm();
+loadSemuaRT();
+});
+}
+
+// ===== LOAD DATA =====
+function loadSemuaRT(){
+fetch(scriptURL)
+.then(r=>r.json())
+.then(data=>{
+let html="";
+for(let r=1;r<=13;r++){
+let rt=("0"+r).slice(-2);
+let rtName="RT "+rt;
+let f=data.filter(d=>d.rt===rtName);
+html+=`
+<div class="card shadow-sm p-3 mb-3">
+<h5 class="text-success">${rtName}</h5>
+<table class="table table-bordered table-striped">
+<thead class="table-success">
+<tr><th>No</th><th>No Rumah</th><th>Nama</th><th>Keterangan</th><th width="110">Aksi</th></tr>
+</thead><tbody>`;
+if(!f.length){
+html+=`<tr><td colspan="5" class="text-center">Belum ada data</td></tr>`;
+}else{
+f.forEach((d,i)=>{
+html+=`
+<tr>
+<td>${i+1}</td>
+<td>${d.rumah}</td>
+<td>${d.nama}</td>
+<td>${d.ket}</td>
+<td>
+<button class="btn btn-sm btn-warning" onclick="editData('${d.id}','${d.rt}','${d.rumah}','${d.nama}','${d.ket}')">✏️</button>
+<button class="btn btn-sm btn-danger" onclick="hapusData('${d.id}')">🗑️</button>
+</td>
+</tr>`;
+});
+}
+html+=`</tbody></table></div>`;
+}
+dataRT.innerHTML=html;
+});
+}
+
+// ===== EDIT =====
+function editData(id,rt,rumah,nama,ket){
+editId.value=id;
+rtInput.value=rt;
+rumahInput.value=rumah;
+namaInput.value=nama;
+ketInput.value=ket;
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// ===== DELETE =====
+function hapusData(id){
+if(!confirm("Yakin hapus data ini?"))return;
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({action:"delete",id})
+})
+.then(()=>loadSemuaRT());
+}
+
+// ===== RESET =====
+function resetForm(){
+editId.value="";
+rumahInput.value="";
+namaInput.value="";
+ketInput.value="";
+}
+
+// ===== INIT =====
+loadSemuaRT();
+</script>
+
+</body>
+</html>
