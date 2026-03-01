@@ -25,12 +25,36 @@ padding:10px 0;
 .title-sub{font-size:15px;font-weight:600;}
 .title-desc{font-size:12px;}
 
-@media(max-width:768px){
-.upz-header .container{flex-direction:column;gap:6px;}
-.logo-upz,.logo-baznas{max-height:55px;}
-.title-main{font-size:15px;}
-.title-sub{font-size:13px;}
-.title-desc{font-size:11px;}
+/* ===== MOBILE HEADER LEBAR ===== */
+@media (max-width: 768px) {
+
+  .upz-header .container{
+    flex-direction: row;        /* TETAP SEJAJAR */
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-upz,
+  .logo-baznas{
+    max-height: 50px;
+  }
+
+  .header-title{
+    padding: 0 6px;
+  }
+
+  .title-main{
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .title-sub{
+    font-size: 12px;
+  }
+
+  .title-desc{
+    font-size: 10px;
+  }
 }
 </style>
 </head>
